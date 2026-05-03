@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+:root {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+html, body {
+  overflow-x: hidden;
+}
+/* Base Font */
+body {
+  font-family: var(--font-inter);
+}
+
+/* Headings (Luxury Look) */
+/* 🎨 Premium Typography System */
+
+.font-heading {
+  font-family: var(--font-playfair);
+  letter-spacing: 0.5px;
+}
+
+.font-body {
+  font-family: var(--font-inter);
+}
+
+.font-accent {
+  font-family: var(--font-poppins);
+  letter-spacing: 0.7px;
+}
+.font-geist {
+  font-family: var(--font-geist-sans);
+  letter-spacing: 0.7px;
+}
+.font-art {
+  font-family: var(--font-playfair);
+  letter-spacing: 1px;
+}
+/* 3D Perspective */
+.perspective {
+  perspective: 1200px;
+}
+
+/* Rotate effect */
+.rotate-y-6 {
+  transform: rotateY(90deg);
+}
+/* 🔥 Animated Divider */
+.divider {
+  position: relative;
+  height: 1px;
+  background: #e5e5e5;
+  overflow: hidden;
+}
+
+.divider::after {
+  content: "";
+  position: absolute;
+  left: -50%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, black, transparent);
+  animation: slideDivider 3s linear infinite;
+}
+
+@keyframes slideDivider {
+  0% { left: -50%; }
+  100% { left: 100%; }
+}
+
+/* 🔥 Premium Hover Underline */
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0%;
+  height: 1px;
+  background: black;
+  transition: width 0.3s ease;
+}
+
+.link-underline:hover::after {
+  width: 100%;
+}
+/* 🌈 Rainbow Text */
+.rainbow-text {
+  background: linear-gradient(
+    90deg,
+    #ff0000,
+    #ff9900,
+    #ffff00,
+    #00ff00,
+    #00ffff,
+    #0000ff,
+    #ff00ff,
+    #ff0000
+  );
+  background-size: 300% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbowMove 18s linear infinite;
+}
+
+/* 🌈 Gradient animation */
+@keyframes rainbowMove {
+  0% { background-position: 0% center; }
+  100% { background-position: 300% center; }
+}
+
+/* ✨ Soft blinking glow */
+.blink-soft {
+  animation: blinkGlow 1.8s ease-in-out infinite;
+}
+
+@keyframes blinkGlow {
+  0%, 100% { opacity: 1; text-shadow: 0 0 5px rgba(255,255,255,0.2); }
+  50% { opacity: 0.85; text-shadow: 0 0 12px rgba(255,255,255,0.6); }
+}
+
+/* 🔁 Horizontal scroll */
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+
+.marquee-inner {
+  display: inline-block;
+  padding-left: 100%;
+  animation: scrollLeft 12s linear infinite;
+}
+
+@keyframes scrollLeft {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  max-width: 100%;
+}
