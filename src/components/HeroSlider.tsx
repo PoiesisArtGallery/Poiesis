@@ -52,7 +52,7 @@ export default function HeroSlider() {
   }
   return (
 
-    <div className="relative w-auto h-[300px] sm:h-[400px] md:h-[600px] overflow-hidden rounded-[15px]">
+    <div className="relative w-auto h-[300px] sm:h-[400px] md:h-[600px] object-contain overflow-hidden rounded-[15px]">
 
       {slides.map((art, i) => (
 
@@ -68,7 +68,7 @@ export default function HeroSlider() {
 
           <img
   src={getImageUrl(art.image, "artworks")}
-  className="w-auto h-[300px] sm:h-[400px] md:h-[600px] rounded-[15px]"
+  className="w-auto h-[300px]  md:h-[600px] rounded-[15px] object-contain mx-auto"
 />
 
         </Link>

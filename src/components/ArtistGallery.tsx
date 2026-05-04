@@ -44,7 +44,7 @@ export default function ArtistGallery() {
 
       <div className="flex justify-between items-center mb-6">
 
-        <h2 className="text-2xl">Explore by Artist</h2>
+        <h2 className="text-2xl md:text-3xl font-heading mb-10 text-center underline">Explore by Artist</h2>
  {artist && (
     <span className="text-2xl font-heading text-blue-800 underline">
        {artist}

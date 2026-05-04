@@ -44,7 +44,7 @@ useEffect(() => {
       {title}
     </h2>
 
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-auto">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-auto">
 
       {items?.map((artist: any) => (
 
@@ -57,6 +57,7 @@ useEffect(() => {
               alt={artist.name}
               width={400}
               height={500}
+              
               className="w-full aspect-auto object-cover group-hover:scale-105 transition duration-500"
             />
 
