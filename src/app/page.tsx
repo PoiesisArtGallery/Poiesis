@@ -123,7 +123,7 @@ useEffect(() => {
 
       <h2 className="text-xl sm:text-2xl md:text-4xl mx-8 font-heading font-bold underline mb-6">{section.title}</h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-auto">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-auto">
 
         {filtered.map((art) => (
 

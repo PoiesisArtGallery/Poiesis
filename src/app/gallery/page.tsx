@@ -55,12 +55,13 @@ export default function GalleryPage() {
 
   const categories = [
     "Paintings",
+    "Landscape",
     "Sketch",
     "Murals",
     "Sculpture",
     "Snapshots",
-    "Graphics & Printmaking",
-    "Limited Edition"
+    "Graphics & Printmaking"
+    
   ]
 
   return (
@@ -88,7 +89,7 @@ export default function GalleryPage() {
               {category}
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
 
               {filtered.map((art) => (
                 <ArtworkCard
@@ -255,7 +256,7 @@ function ArtworkCard({ art, addToCart, isPurchasable }: any) {
 
           <img
             src={getImageUrl(art.image)}
-            className="aspect-auto w-[270px] object-cover group-hover:scale-105 transition duration-800 mb-3"
+            className="aspect-auto w-full object-cover group-hover:scale-105 transition duration-800 mb-3"
           />
 
           <p className="font-art">{art.title}</p>

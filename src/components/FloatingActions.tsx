@@ -122,7 +122,7 @@ useEffect(() => {
     <>
       {/* FLOATING BUTTONS */}
       <div className="fixed bottom-2 right-2 flex flex-col gap-3 z-50">
-{user?.email === "manishbarnwal925@gmail.com" && (
+{user?.email === "poiesis.art.gallery.pag@gmail.com" && (
   <Link href="/admin" className=" font-bold font-art text-2xl text-pink-800 border  rounded-full px-2 py-1 hover:bg-yellow-400 hover:text-black hover:underline transition ">
     👤
   </Link>
