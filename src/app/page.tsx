@@ -44,7 +44,7 @@ useEffect(() => {
       {title}
     </h2>
 
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-auto">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
 
       {items?.map((artist: any) => (
 
@@ -121,9 +121,9 @@ useEffect(() => {
 
     <div key={section.id} className="mt-16">
 
-      <h2 className="text-xl sm:text-2xl md:text-4xl mx-8 font-heading font-bold underline mb-6">{section.title}</h2>
+      <h2 className="text-3xl sm:text-3xl md:text-4xl mx-8 font-heading font-bold underline mb-6">{section.title}</h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-auto">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
 
         {filtered.map((art) => (
 
@@ -131,7 +131,7 @@ useEffect(() => {
 
             <img
               src={getImageUrl(art.image, "artworks")}
-              className="mx-4 w-full h-[250px] object-contain rounded-[30px]"
+              className="mx-4 w-full h-[250px] object-cover rounded-[30px]"
             />
 
             <p className="text-xl font-art mb-2 mx-8 hover:underline hover:text-blue-900 transition">{art.title}</p>

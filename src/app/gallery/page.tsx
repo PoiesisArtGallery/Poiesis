@@ -89,7 +89,7 @@ export default function GalleryPage() {
               {category}
             </h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
 
               {filtered.map((art) => (
                 <ArtworkCard
