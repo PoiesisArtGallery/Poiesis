@@ -98,7 +98,7 @@ export default function ArtistGallery() {
       {visibleCount < filtered.length && (
         <button
           onClick={() => setVisibleCount(prev => prev + 6)}
-          className="mt-6 border px-4 py-2"
+          className="font-bold text-blue-900 mt-6 border rounded-[20px] px-2 hover:bg-yellow-400 hover:text-black transition"
         >
           Show More
         </button>

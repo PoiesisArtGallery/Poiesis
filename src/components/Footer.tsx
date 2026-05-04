@@ -61,7 +61,7 @@ useEffect(() => {
 
           <div className="flex items-center gap-2 text-lg text-gray-700 mb-2">
             <Mail size={20} />
-            <span>poiesis.art.gallery.pag@gmail.com</span>
+            <span>poiesisartgalleryinfo@gmail.com</span>
           </div>
 
           <div className="flex items-center gap-2 text-lg text-gray-700 mb-6">
