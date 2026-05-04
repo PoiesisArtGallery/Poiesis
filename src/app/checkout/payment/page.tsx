@@ -95,7 +95,7 @@ localStorage.setItem("orderItems", JSON.stringify(items))
   }, [])
 
   return (
-    <div className="text-center mt-20">
+    <div className="text-center mt-20 text-xl font-bold border rounded-lg p-10">
       Processing Payment...
     </div>
   )

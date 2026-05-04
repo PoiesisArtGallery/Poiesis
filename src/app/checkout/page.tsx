@@ -59,7 +59,7 @@ export default function CheckoutPage() {
         <input name="email" placeholder="Email" required onChange={handleChange} className="w-full border rounded-[20px]  p-2" />
 
         {/* 🚚 SHIPPING NOTE */}
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-blue-800 font-bold">
           Order tracking details will be available within 3–4 days (domestic) and 6–7 days (international deliveries).
         </p>
 

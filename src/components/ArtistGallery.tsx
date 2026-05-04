@@ -84,7 +84,7 @@ export default function ArtistGallery() {
 
             <img
               src={getImageUrl(art.image)}
-              className="h-[250px] w-full object-cover"
+              className="h-[250px] w-full object-contain rounded-[15px] mb-3"
             />
 
             <p className="text-lg font-art underline">{art.title}</p>

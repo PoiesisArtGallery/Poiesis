@@ -256,7 +256,7 @@ function ArtworkCard({ art, addToCart, isPurchasable }: any) {
 
           <img
             src={getImageUrl(art.image)}
-            className="aspect-auto w-full object-cover group-hover:scale-105 transition duration-800 mb-3"
+            className="h-[250px] w-full object-contain group-hover:scale-105 transition duration-800 mb-3"
           />
 
           <p className="font-art">{art.title}</p>
