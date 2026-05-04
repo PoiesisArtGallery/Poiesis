@@ -55,7 +55,7 @@ export default function GalleryPage() {
 
   const categories = [
     "Paintings",
-    "Landscape",
+    "Landscapes",
     "Sketch",
     "Murals",
     "Sculpture",
@@ -248,7 +248,7 @@ function ArtworkCard({ art, addToCart, isPurchasable }: any) {
 
   return (
 
-    <div className="p-4">
+    <div className="p-2">
 
       <div className="group">
 
