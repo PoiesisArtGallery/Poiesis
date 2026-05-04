@@ -89,7 +89,7 @@ export default function GalleryPage() {
               {category}
             </h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
 
               {filtered.map((art) => (
                 <ArtworkCard
@@ -248,17 +248,17 @@ function ArtworkCard({ art, addToCart, isPurchasable }: any) {
 
   return (
 
-    <div className="p-2">
+    
 
-      <div className="group">
+      <div className="bg-white rounded-xl shadow-md overflow-hidden">
 
-        <div className="overflow-hidden rounded-xl shadow-xl">
+        <div className="w-full h-[250px] overflow-hidden">
 
           <img
             src={getImageUrl(art.image)}
-            className="h-[250px] w-full object-contain group-hover:scale-105 transition duration-800 mb-3"
+            className="w-full h-full object-cover transition duration-500 group-hover:scale-105"
           />
-
+<div className="p-3">
           <p className="font-art">{art.title}</p>
           <p className="text-md font-bold text-blue-800">{art.artist}</p>
 
