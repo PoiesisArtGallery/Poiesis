@@ -131,7 +131,7 @@ useEffect(() => {
 
             <img
               src={getImageUrl(art.image, "artworks")}
-              className="mx-4 w-full h-[250px] object-contain rounded-[20px]"
+              className="mx-4 w-full h-[250px] object-contain rounded-[20px] overflow-hidden group-hover:scale-105 transition duration-800 mb-3"
             />
 
             <p className="text-xl font-art mb-2 mx-8 hover:underline hover:text-blue-900 transition">{art.title}</p>
