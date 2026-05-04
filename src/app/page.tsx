@@ -58,7 +58,7 @@ useEffect(() => {
               width={400}
               height={500}
               
-              className="w-full aspect-auto object-cover group-hover:scale-105 transition duration-500"
+              className="w-full aspect-auto object-contain group-hover:scale-105 transition duration-500"
             />
 
           </div>
@@ -131,7 +131,7 @@ useEffect(() => {
 
             <img
               src={getImageUrl(art.image, "artworks")}
-              className="mx-4 aspect-[4/3] w-[250px] object-cover rounded-[30px]"
+              className="mx-4 aspect-[4/3] w-[250px] object-contain rounded-[30px]"
             />
 
             <p className="text-xl font-art mb-2 mx-8 hover:underline hover:text-blue-900 transition">{art.title}</p>
@@ -201,7 +201,7 @@ useEffect(() => {
       <p className="text-2xl mb-3">🚚</p>
       <p className="font-medium font-art">Free Shipping</p>
       <p className="text-sm text-gray-400 mt-1">
-        Above ₹5000 (India) & ₹30000 (International)
+        *Above ₹8000 (India) & ₹40000 (International)
       </p>
     </div>
 
