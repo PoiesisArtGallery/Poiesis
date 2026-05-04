@@ -37,7 +37,7 @@ export default function LoginModal({ open, setOpen }: any) {
   email,
   password,
   options: {
-    emailRedirectTo: "http://localhost:3000"
+    emailRedirectTo: "https://www.poiesisartgallery.com/login"
   }
 })
       
