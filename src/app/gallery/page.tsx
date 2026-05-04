@@ -248,17 +248,17 @@ function ArtworkCard({ art, addToCart, isPurchasable }: any) {
 
   return (
 
-    
+    <div className="p-2">
 
-      <div className="bg-white rounded-xl shadow-md overflow-hidden">
+      <div className="group">
 
-        <div className="w-full h-[250px] overflow-hidden">
+        <div className="overflow-hidden rounded-xl shadow-xl">
 
           <img
             src={getImageUrl(art.image)}
-            className="w-full h-full object-cover transition duration-500 group-hover:scale-105"
+            className="h-[250px] w-full object-cover group-hover:scale-105 transition duration-800 mb-3"
           />
-<div className="p-3">
+
           <p className="font-art">{art.title}</p>
           <p className="text-md font-bold text-blue-800">{art.artist}</p>
 
