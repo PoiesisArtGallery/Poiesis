@@ -61,7 +61,9 @@ export default function RootLayout({
           bg-[#fafafa] text-black antialiased
         `}
       >
-<meta className="overflow-x-hidden"/>
+<p className="text-gray-500 mb-2">
+              </p>
+
         {/* NAVBAR */}
         <Navbar />
 

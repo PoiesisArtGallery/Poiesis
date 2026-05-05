@@ -98,8 +98,8 @@ export default function HeroSlider() {
       <button
   onClick={prevSlide}
   className="absolute left-5 top-1/2 -translate-y-1/2 
-             z-50 
-             bg-black/60 backdrop-blur-md 
+             z-10 
+             bg-gray-60 backdrop-blur-md 
              text-white p-3 rounded-full 
              hover:bg-black hover:scale-110 
              transition"
@@ -111,8 +111,8 @@ export default function HeroSlider() {
       <button
         onClick={nextSlide}
         className="absolute right-5 top-1/2 -translate-y-1/2 
-        z-50
-        bg-black/60 backdrop-blur-md 
+        z-10
+        bg-gray-60 backdrop-blur-md 
         text-white p-3 rounded-full 
         hover:bg-black hover:scale-110 
         transition"
