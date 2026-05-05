@@ -61,7 +61,7 @@ useEffect(() => {
         "Step into a world where every piece tells a story, and every story finds a home"
       </div>
  {/* 🔥 MOBILE NAV */}
-      <div className="flex flex-col md:hidden items-center py-3">
+      <div className="flex flex-col md:hidden items-center py-2">
 
         {/* ✅ LOGO ALWAYS TOP */}
         <Link href="/">
@@ -72,12 +72,12 @@ useEffect(() => {
           />
         </Link>
       {/* Main Navigation */}
-      <div className="flex items-center justify-between px-2 sm:px-6 md:px-10 py-6 overflow-hidden">
+      <div className="fixed items-center justify-between px-2 sm:px-6 md:px-10 py-4 overflow-hidden">
 
        
  
         {/* Navigation */}
-        <nav className="flex gap-6 text-sm items-center flex-wrap text-black">
+        <nav className="flex gap-3 text-sm items-center flex-wrap text-black">
   <a href="/" className="flex items-center gap-1 font-bold hover:text-red-700 hover:underline">
     <Home size={18} />
     Home
@@ -184,7 +184,7 @@ useEffect(() => {
 
 </div>
 {/* 🔥 DESKTOP NAV (UNCHANGED STYLE) */}
-      <div className="hidden md:flex items-center justify-between px-10 py-4">
+      <div className="hidden md:fixed items-center justify-between px-10 py-4">
          {/* Logo */}
         <a href="/" className="flex items-center ">
   <Image
