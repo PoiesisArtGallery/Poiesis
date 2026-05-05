@@ -66,7 +66,7 @@ export default function GalleryPage() {
 
   return (
 
-    <main className="px-6 bg-[#ffefe4] md:px-10 py-10">
+    <main className="px-2 bg-[#ffefe4] md:px-10 py-10">
 
       <h1 className="font-art text-center text-[60px] underline font-bold">Gallery</h1>
 
