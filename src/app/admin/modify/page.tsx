@@ -215,6 +215,18 @@ const fetchResults = async () => {
               {type === "artist" && (
 
                 <>
+                 <textarea
+                    value={item.slug || ""}
+                    onChange={(e) =>
+                      setResults(prev =>
+                        prev.map(r =>
+                          r.id === item.id ? { ...r, slug: e.target.value } : r
+                        )
+                      )
+                    }
+                    className="border rounded-[20px] px-2 py-1 w-full"
+                    placeholder="Slug (e.g. a-kumar)"
+                  />
                   <textarea
                     value={item.short_bio || ""}
                     onChange={(e) =>
@@ -274,7 +286,22 @@ const fetchResults = async () => {
                   Show in Slideshow
                 </label>
               )}
-
+{type === "artist" && (
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={item.featured || false}
+                    onChange={(e) =>
+                      setResults(prev =>
+                        prev.map(r =>
+                          r.id === item.id ? { ...r, featured: e.target.checked } : r
+                        )
+                      )
+                    }
+                  />
+                  Featured Artist (for homepage spotlight)
+                </label>
+              )}
               {/* ACTIONS */}
               <div className="flex gap-3">
 
@@ -304,9 +331,11 @@ const fetchResults = async () => {
   if (type === "artist") {
     updateData = {
       name: item.name,
+      slug: item.slug,
       short_bio: item.short_bio,
       full_bio: item.full_bio,
-      image: item.image
+      image: item.image,
+      featured: item.featured
     }
   }
 
