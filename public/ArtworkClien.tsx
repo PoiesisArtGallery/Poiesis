@@ -1,9 +1,7 @@
 <p className="text-gray-500 mb-20">
               </p>
 
-git add .
-git commit -m "small update"
-git push
+
 
 
 import { Resend } from "resend"
