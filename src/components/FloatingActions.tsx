@@ -5,7 +5,7 @@ import { MessageCircleMore, Mail, Import } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { supabase } from "@/lib/supabase"
-import { link } from "node:fs"
+
 export default function FloatingActions() {
 const [email, setEmail] = useState("")
 const [name, setName] = useState("")
@@ -22,8 +22,8 @@ const [loading, setLoading] = useState(false)
   })
 const handleSubscribe = async () => {
 
-  if (!email) {
-    alert("Please enter email")
+  if (!name || !email) {
+    alert("Please enter name and email")
     return
   }
 
@@ -31,15 +31,23 @@ const handleSubscribe = async () => {
 
   const { error } = await supabase
     .from("subscribers")
-    .insert([{ email }])
+    .insert([
+      {
+        name,
+        email
+      }
+    ])
 
   if (error) {
 
-    console.error(error) // 👈 VERY IMPORTANT
+    console.error(error)
 
     if (error.code === "23505") {
+
       alert("You are already subscribed")
+
     } else {
+
       alert("Error: " + error.message)
     }
 
@@ -47,16 +55,28 @@ const handleSubscribe = async () => {
     return
   }
 
-  // SEND EMAIL
+  // ✅ SEND EMAIL
   await fetch("/api/send-email", {
+
     method: "POST",
-    body: JSON.stringify({ email })
+
+    headers: {
+      "Content-Type": "application/json"
+    },
+
+    body: JSON.stringify({
+      name,
+      email
+    })
   })
 
   alert("Subscribed successfully 🎉")
 
+  setName("")
   setEmail("")
+
   setOpenSubscribe(false)
+
   setLoading(false)
 }
   // 🔥 AUTO WHATSAPP (once)

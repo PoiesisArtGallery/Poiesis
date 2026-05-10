@@ -60,7 +60,7 @@ export default function GalleryPage() {
     "Murals",
     "Sculpture",
     "Snapshots",
-    "Graphics & Printmaking"
+    "Graphics / Printmaking"
     
   ]
 

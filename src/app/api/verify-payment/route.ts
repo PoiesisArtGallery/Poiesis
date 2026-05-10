@@ -54,9 +54,18 @@ export async function POST(req: Request) {
         }
       ])
 
-    if (error) {
-      console.error(error)
-    }
+   if (error) {
+
+  console.error("ORDER INSERT ERROR:", error)
+
+  return NextResponse.json(
+    {
+      success: false,
+      message: error.message
+    },
+    { status: 500 }
+  )
+}
 
     // ✅ UPDATE ARTWORK STATUS
     for (const item of orderData.items) {
