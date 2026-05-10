@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
+import { useParams } from "next/navigation"
+export default function OrderDetail() {
 
-export default function OrderDetail({ params }: any) {
-
+  const params = useParams()
   const [order, setOrder] = useState<any>(null)
   const [tracking, setTracking] = useState("")
 
@@ -14,7 +15,7 @@ export default function OrderDetail({ params }: any) {
       const { data } = await supabase
         .from("orders")
         .select("*")
-        .eq("id", params.id)
+       .eq("id", params.id as string)
         .single()
 
       setOrder(data)
