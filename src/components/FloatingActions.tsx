@@ -8,6 +8,7 @@ import { supabase } from "@/lib/supabase"
 import { link } from "node:fs"
 export default function FloatingActions() {
 const [email, setEmail] = useState("")
+const [name, setName] = useState("")
 const [loading, setLoading] = useState(false)
   const [openWhatsApp, setOpenWhatsApp] = useState(false)
   const [openSubscribe, setOpenSubscribe] = useState(false)
@@ -282,7 +283,13 @@ useEffect(() => {
           <p className="text-sm mb-3">
             Subscribe to our newsletter and blogs, and never miss an update.
           </p>
-
+ <input
+  type="name"
+  placeholder="Enter your name"
+  value={name}
+  onChange={(e) => setName(e.target.value)}
+  className="w-full border px-3 py-2 rounded-md mb-2"
+/>
           <input
   type="email"
   placeholder="Enter your email"
