@@ -43,7 +43,13 @@ export default function InquiryDetail() {
     <main className="px-10 py-16 space-y-6">
 
       <h1 className="text-2xl mb-4">Inquiry Details</h1>
+<p>
+  <strong>Artwork:</strong> {data.artwork}
+</p>
 
+<p>
+  <strong>Artist:</strong> {data.artist}
+</p>
       {/* INFO */}
       <p><strong>Name:</strong> {data.name}</p>
       <p><strong>Email:</strong> {data.email}</p>
@@ -101,7 +107,25 @@ export default function InquiryDetail() {
         >
           Toggle Status
         </button>
+<a
+  href={`https://wa.me/${data.phone?.replace(/\D/g, "")}?text=${encodeURIComponent(
+`Hello ${data.name},
 
+Thank you for contacting POIESIS ART GALLERY 🎨
+
+Your inquiry has been successfully registered.
+
+Our representatives will contact you soon regarding your request.
+
+Thank you for your interest in our artworks and commissions.
+
+— POIESIS ART GALLERY`
+  )}`}
+  target="_blank"
+  className="bg-green-600 text-white px-4 py-2 rounded inline-block"
+>
+  Send Inquiry Response on WhatsApp
+</a>
       </div>
 
     </main>

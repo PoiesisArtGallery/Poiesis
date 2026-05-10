@@ -37,7 +37,9 @@ export default function InquiryPage() {
             <p>{item.email}</p>
             <p>{item.phone}</p>
             <p className="mt-2">{item.message}</p>
-
+<p className="text-blue-800 font-semibold">
+  Artwork: {item.artwork}
+</p>
           </div>
         </Link>
 

@@ -2,8 +2,14 @@
 
 import { useState } from "react"
 import { supabase } from "@/lib/supabase"
-import emailjs from "emailjs-com"
+import { useSearchParams } from "next/navigation"
+
 export default function InquiryPage() {
+
+  const searchParams = useSearchParams()
+
+  const artwork = searchParams.get("artwork") || ""
+  const artist = searchParams.get("artist") || ""
 
   const [form, setForm] = useState({
     name: "",
@@ -18,6 +24,7 @@ export default function InquiryPage() {
   const [loading, setLoading] = useState(false)
 
   const handleChange = (e: any) => {
+
     setForm({
       ...form,
       [e.target.name]: e.target.value
@@ -25,105 +32,109 @@ export default function InquiryPage() {
   }
 
   const handleSubmit = async (e: any) => {
-  e.preventDefault()
-  setLoading(true)
 
-  let imageUrls: string[] = []
+    e.preventDefault()
 
-  try {
+    setLoading(true)
 
-    // Upload multiple images safely
-    if (files.length > 0) {
+    let imageUrls: string[] = []
 
-      for (const file of files) {
-
-  const fileName = `${Date.now()}-${file.name}`
-
-  const { data, error } = await supabase.storage
-    .from("inquiry-images")
-    .upload(fileName, file)
-
-  if (error) {
-    console.error("UPLOAD ERROR:", error.message)
-    alert("Image upload failed: " + error.message)
-    continue
-  }
-
-  console.log("UPLOAD SUCCESS:", data)
-
-  const { data: publicData } = supabase.storage
-    .from("inquiry-images")
-    .getPublicUrl(fileName)
-
-  if (publicData?.publicUrl) {
-    imageUrls.push(publicData.publicUrl)
-  }
-
-}
-
-    }
     try {
-  await emailjs.send(
-    "service_b90e3xl",
-    "template_qk76k5s",
-    {
-      name: form.name,
-      email: form.email,
-      phone: form.phone,
-      type: form.type,
-      message: form.message,
-images: imageUrls.join("\n")
-    },
-    "4zmqOnHAlm2a9dj3z"
-  )
 
-  console.log("EMAIL SENT")
+      // ✅ IMAGE UPLOAD
+      if (files.length > 0) {
 
-} catch (err) {
-  console.error("EMAIL ERROR:", err)
-}
+        for (const file of files) {
 
-    // Save to database (ALWAYS RUN — even if images fail)
-    const { error } = await supabase
-      .from("inquiries")
-      .insert([
-        {
-          ...form,
-          image_url: imageUrls
+          const fileName = `${Date.now()}-${file.name}`
+
+          const { error } = await supabase.storage
+            .from("inquiry-images")
+            .upload(fileName, file)
+
+          if (error) {
+
+            console.error(error)
+
+            alert("Image upload failed")
+
+            continue
+          }
+
+          const { data: publicData } = supabase.storage
+            .from("inquiry-images")
+            .getPublicUrl(fileName)
+
+          if (publicData?.publicUrl) {
+            imageUrls.push(publicData.publicUrl)
+          }
         }
-      ])
+      }
 
-    if (error) {
-      alert("Error saving inquiry")
-      console.error("FULL ERROR:", JSON.stringify(error, null, 2))
-alert(error?.message || "Database error")
-      setLoading(false)
-      return
+      // ✅ SAVE INQUIRY
+      const { error } = await supabase
+        .from("inquiries")
+        .insert([
+          {
+            ...form,
+            artwork,
+            artist,
+            image_url: imageUrls,
+            status: "Pending"
+          }
+        ])
+
+      if (error) {
+
+        console.error(error)
+
+        alert(error.message)
+
+        setLoading(false)
+
+        return
+      }
+
+      // ✅ SEND EMAIL VIA RESEND API & WHATSAPP ALERT VIA TWILIO
+      await fetch("/api/inquiry-email", {
+
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          ...form,
+          artwork,
+          artist,
+          images: imageUrls
+        })
+      })
+
+      alert("Inquiry submitted successfully!")
+
+      // ✅ RESET
+      setForm({
+        name: "",
+        place: "",
+        type: "",
+        phone: "",
+        email: "",
+        message: ""
+      })
+
+      setFiles([])
+
+    } catch (err) {
+
+      console.error(err)
+
+      alert("Something went wrong")
     }
 
-    alert("Inquiry submitted successfully!")
-
-    // Reset form
-    setForm({
-      name: "",
-      place: "",
-      type: "",
-      phone: "",
-      email: "",
-      message: ""
-    })
-
-    setFiles([])
-
-  } catch (err) {
-    console.error(err)
-    alert("Something went wrong")
+    setLoading(false)
   }
-
-  setLoading(false)
-}
-
-    
 
   return (
 
@@ -132,6 +143,25 @@ alert(error?.message || "Database error")
       <h1 className="text-4xl font-art underline mb-10 text-center">
         Commission / Inquiry
       </h1>
+
+      {(artwork || artist) && (
+
+        <div className="mb-8 border rounded-[20px] p-4 bg-yellow-50">
+
+          {artwork && (
+            <p className="font-bold text-lg text-blue-900">
+              Artwork: {artwork}
+            </p>
+          )}
+
+          {artist && (
+            <p className="text-sm text-gray-700 mt-1">
+              Artist: {artist}
+            </p>
+          )}
+
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
 
@@ -152,7 +182,7 @@ alert(error?.message || "Database error")
           value={form.place}
           onChange={handleChange}
           required
-          className="w-full border rounded-[20px]  font-art p-3 text-white bg-gray-800"
+          className="w-full border rounded-[20px] font-art p-3 text-white bg-gray-800"
         />
 
         <select
@@ -163,12 +193,14 @@ alert(error?.message || "Database error")
           className="w-full border rounded-[20px] font-art p-3 text-white bg-gray-800"
         >
           <option value="">Type of Work</option>
+
           <option>Portrait</option>
           <option>Couple Artwork</option>
           <option>Murals</option>
           <option>Wall Design (Cafe/Restaurant)</option>
           <option>Custom Artwork</option>
           <option>Request Availability of an Artwork</option>
+
         </select>
 
         <input
@@ -199,15 +231,15 @@ alert(error?.message || "Database error")
           className="w-full border rounded-[20px] font-art p-3 h-32 text-white bg-gray-800"
         />
 
-        {/* File Upload */}
-
         <input
-  type="file"
-  accept="image/*"
-  multiple
-  onChange={(e: any) => setFiles(Array.from(e.target.files))}
-  className="w-full border rounded-[20px] font-art p-3 text-white bg-gray-800"
-/>
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={(e: any) =>
+            setFiles(Array.from(e.target.files))
+          }
+          className="w-full border rounded-[20px] font-art p-3 text-white bg-gray-800"
+        />
 
         <button
           type="submit"
@@ -220,7 +252,5 @@ alert(error?.message || "Database error")
       </form>
 
     </main>
-
   )
-
 }

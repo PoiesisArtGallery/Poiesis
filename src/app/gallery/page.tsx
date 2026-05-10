@@ -306,7 +306,9 @@ href={`/artwork/${art.id}`}>
             <ShoppingCart size={20} />
           </button>
         ) : (
-          <Link href="/inquiry">
+          <Link
+  href={`/inquiry?artwork=${encodeURIComponent(art.title)}&artist=${encodeURIComponent(art.artist)}`}
+>
             <Info size={20} />
           </Link>
         )}

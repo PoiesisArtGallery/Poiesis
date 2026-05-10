@@ -2,9 +2,11 @@
 
 import { useCartStore } from "@/store/cartStore"
 import { useEffect } from "react"
-import emailjs from "emailjs-com"
+import { useRouter } from "next/navigation"
 
 export default function PaymentPage() {
+
+  const router = useRouter()
 
   const items = useCartStore((state) => state.items)
 
@@ -18,86 +20,162 @@ export default function PaymentPage() {
 
     const loadRazorpay = async () => {
 
-      const res = await fetch("/api/create-order", {
-        method: "POST",
-        body: JSON.stringify({ amount: total })
-      })
+      try {
 
-      const order = await res.json()
+        // ✅ CREATE ORDER
+        const res = await fetch("/api/create-order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ amount: total })
+        })
 
-      const shipping = JSON.parse(localStorage.getItem("shipping") || "{}")
+        const order = await res.json()
 
-      const options: any = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: order.amount,
-        currency: "INR",
-        name: "POIESIS ART GALLERY",
-        description: "Artwork Purchase",
-        order_id: order.id,
-
-        handler: async function (response: any) {
-
-          const orderId = "PAG-" + Date.now()
-localStorage.setItem("orderItems", JSON.stringify(items))
-          // ✅ Save payment info
-          localStorage.setItem("payment", JSON.stringify({
-            paymentId: response.razorpay_payment_id,
-            orderId: response.razorpay_order_id
-          }))
-// ✅ SAVE ITEMS HERE
-  localStorage.setItem("orderItems", JSON.stringify(items))
-
-  window.location.href = "/checkout/success"
-          // 📨 SEND EMAIL
-          try {
-
-            await emailjs.send(
-              "service_b90e3xl",
-              "template_21rksnb",
-              {
-                name: shipping.name,
-                email: shipping.email,
-                order_id: orderId,
-                payment_id: response.razorpay_payment_id,
-                items: items.map(i => i.title).join(", "),
-                total: total
-              },
-              "4zmqOnHAlm2a9dj3z"
-            )
-
-          } catch (err) {
-            console.error("Email failed:", err)
-          }
-
-          // ✅ Redirect
-          window.location.href = "/checkout/success"
-        },
-
-        prefill: {
-          name: shipping.name,
-          email: shipping.email
-        },
-
-        theme: {
-          color: "#000000"
+        if (!order.id) {
+          alert("Unable to create payment order")
+          return
         }
-      }
 
-      const rzp = new (window as any).Razorpay(options)
-      rzp.open()
+        const shipping = JSON.parse(
+          localStorage.getItem("shipping") || "{}"
+        )
+
+        const orderData = {
+          customer_name: shipping.name,
+          email: shipping.email,
+          phone: shipping.phone,
+          address: shipping.address,
+          items,
+          total
+        }
+
+        const options: any = {
+
+          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+
+          amount: order.amount,
+          currency: "INR",
+
+          name: "POIESIS ART GALLERY",
+
+          description: "Artwork Purchase",
+
+          order_id: order.id,
+
+          // ✅ SUCCESS HANDLER
+          handler: async function (response: any) {
+
+            try {
+
+              // ✅ VERIFY PAYMENT
+              const verifyRes = await fetch("/api/verify-payment", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                  ...response,
+                  orderData
+                })
+              })
+
+              const verifyData = await verifyRes.json()
+
+              // ✅ SUCCESS
+              if (verifyData.success) {
+
+                localStorage.setItem(
+                  "payment",
+                  JSON.stringify({
+                    paymentId: response.razorpay_payment_id,
+                    orderId: response.razorpay_order_id
+                  })
+                )
+
+                localStorage.setItem(
+                  "orderItems",
+                  JSON.stringify(items)
+                )
+
+                router.push("/checkout/success")
+
+              } else {
+
+                alert("Payment failed, try again")
+
+                router.push("/checkout/failed")
+              }
+
+            } catch (err) {
+
+              console.error(err)
+
+              alert("Payment verification failed")
+
+              router.push("/checkout/failed")
+            }
+          },
+
+          // ✅ PAYMENT FAILED
+          modal: {
+            ondismiss: function () {
+              alert("Payment cancelled")
+              router.push("/checkout/failed")
+            }
+          },
+
+          prefill: {
+            name: shipping.name,
+            email: shipping.email,
+            contact: shipping.phone
+          },
+
+          theme: {
+            color: "#000000"
+          }
+        }
+
+        const rzp = new (window as any).Razorpay(options)
+
+        // ✅ PAYMENT FAILED EVENT
+        rzp.on("payment.failed", function () {
+
+          alert("Payment failed, try again")
+
+          router.push("/checkout/failed")
+        })
+
+        rzp.open()
+
+      } catch (error) {
+
+        console.error(error)
+
+        alert("Something went wrong")
+
+        router.push("/checkout/failed")
+      }
     }
 
+    // ✅ LOAD RAZORPAY SCRIPT
     const script = document.createElement("script")
+
     script.src = "https://checkout.razorpay.com/v1/checkout.js"
+
     script.onload = loadRazorpay
+
     document.body.appendChild(script)
 
   }, [])
 
   return (
+
     <div className="text-center mt-20 text-xl font-bold border rounded-lg p-10">
+
       Processing Payment...
+
     </div>
   )
-
 }

@@ -16,20 +16,37 @@ export default function SuccessPage() {
 
   useEffect(() => {
 
-    const ship = localStorage.getItem("shipping")
-    const pay = localStorage.getItem("payment")
-    const savedItems = localStorage.getItem("orderItems")
+  const ship = localStorage.getItem("shipping")
+  const pay = localStorage.getItem("payment")
+  const savedItems = localStorage.getItem("orderItems")
 
-    if (ship) setShipping(JSON.parse(ship))
-    if (pay) setPayment(JSON.parse(pay))
-    if (savedItems) setOrderItems(JSON.parse(savedItems))
+  if (ship) setShipping(JSON.parse(ship))
 
-    setOrderId("PAG-" + Date.now())
-    setOrderDate(new Date().toLocaleString())
+  if (pay) {
+    const parsedPay = JSON.parse(pay)
+    setPayment(parsedPay)
 
-    clearCart()
+    // ✅ USE REAL ORDER ID
+    if (parsedPay.orderId) {
+      setOrderId(parsedPay.orderId)
+    } else {
+      setOrderId("PAG-" + Date.now())
+    }
+  }
 
-  }, [])
+  if (savedItems) {
+    setOrderItems(JSON.parse(savedItems))
+  }
+
+  setOrderDate(new Date().toLocaleString())
+
+  // ✅ CLEAR CART
+  clearCart()
+
+  // ✅ OPTIONAL CLEANUP
+  localStorage.removeItem("cart-storage")
+
+}, [])
 
   const totalAmount = orderItems.reduce((sum, item) => {
     const price = Number(item.price.replace(/[^0-9]/g, ""))
@@ -80,7 +97,9 @@ export default function SuccessPage() {
         <h2 className="text-3xl font-medium text-black mb-10 text-center">
           Thank you for your purchase
         </h2>
-
+<p className="text-sm text-gray-700 mt-2">
+  Confirmation email and WhatsApp updates will be shared shortly.
+</p>
         {/* CUSTOMER */}
         <div className="grid md:grid-cols-2 gap-6 mb-10">
 
