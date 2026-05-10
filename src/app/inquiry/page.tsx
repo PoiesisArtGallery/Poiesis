@@ -1,10 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import { supabase } from "@/lib/supabase"
 import { useSearchParams } from "next/navigation"
 
-export default function InquiryPage() {
+function InquiryForm() {
 
   const searchParams = useSearchParams()
 
@@ -95,7 +95,7 @@ export default function InquiryPage() {
         return
       }
 
-      // ✅ SEND EMAIL VIA RESEND API & WHATSAPP ALERT VIA TWILIO
+      // ✅ SEND EMAIL + TWILIO ALERT
       await fetch("/api/inquiry-email", {
 
         method: "POST",
@@ -252,5 +252,17 @@ export default function InquiryPage() {
       </form>
 
     </main>
+  )
+}
+
+export default function InquiryPage() {
+
+  return (
+
+    <Suspense fallback={<div className="p-10">Loading...</div>}>
+
+      <InquiryForm />
+
+    </Suspense>
   )
 }
