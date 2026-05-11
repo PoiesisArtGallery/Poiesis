@@ -2,67 +2,128 @@
 
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
-import Image from "next/image"
 import Link from "next/link"
+import { getImageUrl } from "@/lib/getImage"
+import { ShoppingCart, Info } from "lucide-react"
+import { useCartStore } from "@/store/cartStore"
 
 export default function Dashboard() {
 
   const [items, setItems] = useState<any[]>([])
-  const [user, setUser] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  const addToCart = useCartStore(
+    (state) => state.addToCart
+  )
 
   useEffect(() => {
 
-    const load = async () => {
+    const loadWishlist = async () => {
 
-      const { data } = await supabase.auth.getUser()
+      const { data: userData } =
+        await supabase.auth.getUser()
 
-      if (!data.user) return
+      if (!userData.user) {
+        setLoading(false)
+        return
+      }
 
-      setUser(data.user)
-
+      // FETCH WISHLIST IDS
       const { data: wishlist } = await supabase
         .from("wishlist")
-        .select("*")
-        .eq("user_id", data.user.id)
+        .select("artwork_id")
+        .eq("user_id", userData.user.id)
 
-      setItems(wishlist || [])
+      if (!wishlist || wishlist.length === 0) {
+        setItems([])
+        setLoading(false)
+        return
+      }
+
+      const artworkIds = wishlist.map(
+        (w) => w.artwork_id
+      )
+
+      // FETCH REAL ARTWORKS
+      const { data: artworks } = await supabase
+        .from("artworks")
+        .select("*")
+        .in("id", artworkIds)
+
+      setItems(artworks || [])
+
+      setLoading(false)
     }
 
-    load()
+    loadWishlist()
 
   }, [])
 
+  const isPurchasable = (art: any) => {
+
+    return !(
+
+      art.category === "Murals" ||
+      art.category === "Commission" ||
+      art.status === "Out of Stock" ||
+      art.status === "Exhibition Only"
+
+    )
+  }
+
+  if (loading) {
+
+    return (
+
+      <main className="px-6 md:px-12 py-16">
+
+        <p>Loading wishlist...</p>
+
+      </main>
+
+    )
+  }
+
   return (
 
-    <main className="px-6 md:px-12 py-16">
+    <main className="px-6 md:px-12 py-16 min-h-screen bg-[#ffefe4]">
 
-      <h1 className="text-3xl font-art mb-10">
+      <h1 className="text-4xl font-art mb-10">
+
         Your Wishlist
+
       </h1>
 
       {items.length === 0 ? (
 
         <p className="text-gray-500">
+
           No items in wishlist
+
         </p>
 
       ) : (
 
-        <div className="grid md:grid-cols-3 gap-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
 
-          {items.map((item) => (
+          {items.map((art) => (
 
-            <div key={item.id} className="group">
+            <div key={art.id} className="group">
 
               {/* IMAGE */}
-              <div className="overflow-hidden rounded-lg">
+              <div className="overflow-hidden rounded-xl shadow-xl">
 
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  width={400}
-                  height={300}
-                  className="w-full h-[250px] object-cover group-hover:scale-105 transition duration-500"
+                <img
+                  src={getImageUrl(art.image)}
+                  alt={art.title}
+                  className="
+                    h-[250px]
+                    w-full
+                    object-cover
+                    group-hover:scale-105
+                    transition
+                    duration-500
+                  "
                 />
 
               </div>
@@ -70,19 +131,97 @@ export default function Dashboard() {
               {/* INFO */}
               <div className="mt-3">
 
-                <p className="font-medium">{item.title}</p>
+                <p className="font-art">
 
-                {/* 🔥 PRICE ADDED */}
-                <p className="text-sm text-gray-600">
-                  {item.price}
+                  {art.title}
+
                 </p>
 
-                <Link
-                  href={`/artwork/${item.artwork_id}`}
-                  className="text-sm underline mt-1 inline-block"
-                >
-                  Show More →
-                </Link>
+                <p className="text-md font-bold text-blue-800">
+
+                  {art.artist}
+
+                </p>
+
+                {art.price && (
+
+                  <p className="text-sm text-gray-700 mt-1">
+
+                    ₹{art.price}
+
+                  </p>
+
+                )}
+
+                {/* ACTIONS */}
+                <div className="flex items-center gap-3 mt-3">
+
+                  <Link
+                    href={`/artwork/${art.id}`}
+                    className="
+                      text-red-800
+                      font-bold
+                      underline
+                      text-sm
+                      border
+                      rounded-[20px]
+                      px-3
+                      py-1
+                      hover:bg-yellow-400
+                      hover:text-black
+                      transition
+                    "
+                  >
+                    Show More
+                  </Link>
+
+                  {isPurchasable(art) ? (
+
+                    <button
+                      onClick={() =>
+                        addToCart({
+                          id: art.id,
+                          title: art.title,
+                          price: art.price,
+                          image: art.image,
+                          category: art.category,
+                        })
+                      }
+                      className="
+                        border
+                        rounded-full
+                        p-2
+                        hover:bg-black
+                        hover:text-white
+                        transition
+                      "
+                    >
+                      <ShoppingCart size={18} />
+                    </button>
+
+                  ) : (
+
+                    <Link
+                      href={`/inquiry?artwork=${encodeURIComponent(
+                        art.title
+                      )}&artist=${encodeURIComponent(
+                        art.artist
+                      )}`}
+                      className="
+                        border
+                        rounded-full
+                        p-2
+                        hover:bg-black
+                        hover:text-white
+                        transition
+                      "
+                    >
+                      <Info size={18} />
+                    </Link>
+
+                  )}
+
+                </div>
 
               </div>
 

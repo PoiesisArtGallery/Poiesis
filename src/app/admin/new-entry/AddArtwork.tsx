@@ -18,7 +18,9 @@ export default function AddArtwork() {
     medium: "",
     status: "",
     info: "",
-    slideshow: false
+    slideshow: false,
+    initialLikes: "",
+initialComments: ""
   })
 
   // ✅ FETCH ARTISTS FOR DROPDOWN
@@ -36,7 +38,7 @@ export default function AddArtwork() {
 
   }, [])
 
-  const handleSubmit = async () => {
+ const handleSubmit = async () => {
 
   if (!form.title || !form.artist) {
     alert("Title & Artist required")
@@ -45,11 +47,12 @@ export default function AddArtwork() {
 
   const cleanTitle = form.title.trim()
 
-  // 🔥 DUPLICATE CHECK (CASE-INSENSITIVE)
-  const { data: existing, error: checkError } = await supabase
-    .from("artworks")
-    .select("id")
-    .ilike("title", cleanTitle)
+  // 🔥 DUPLICATE CHECK
+  const { data: existing, error: checkError } =
+    await supabase
+      .from("artworks")
+      .select("id")
+      .ilike("title", cleanTitle)
 
   if (checkError) {
     console.error(checkError)
@@ -62,13 +65,18 @@ export default function AddArtwork() {
     return
   }
 
-  // 🔥 INSERT
-  const { error } = await supabase
-    .from("artworks")
-    .insert([{
-      ...form,
-      title: cleanTitle
-    }])
+  // 🔥 INSERT ARTWORK
+  const { data: artwork, error } =
+    await supabase
+      .from("artworks")
+      .insert([
+        {
+          ...form,
+          title: cleanTitle,
+        },
+      ])
+      .select()
+      .single()
 
   if (error) {
     console.error(error)
@@ -76,8 +84,47 @@ export default function AddArtwork() {
     return
   }
 
+  // 🔥 RANDOM INITIAL LIKES
+  const randomLikes =
+  form.initialLikes ||
+
+  (
+    Math.floor(
+      Math.random() * (2000 - 1000 + 1)
+    ) + 1000
+  )
+
+  // 🔥 RANDOM INITIAL COMMENTS
+  const randomComments =
+  form.initialComments ||
+
+  (
+    Math.floor(
+      Math.random() * (1000 - 400 + 1)
+    ) + 400
+  )
+
+  // 🔥 CREATE ARTWORK STATS
+  const { error: statsError } =
+   await supabase
+  .from("artwork_stats")
+  .insert({
+    artwork_id: artwork.id,
+
+    title: artwork.title,
+    artist: artwork.artist,
+
+    likes: randomLikes,
+    comments_count: randomComments,
+  })
+
+  if (statsError) {
+    console.error(statsError)
+  }
+
   alert("Artwork added 🎉")
 
+  // RESET FORM
   setForm({
     title: "",
     artist: "",
@@ -88,7 +135,9 @@ export default function AddArtwork() {
     medium: "",
     status: "",
     info: "",
-    slideshow: false
+    slideshow: false,
+    initialLikes: "",
+initialComments: "",
   })
 }
 
@@ -241,7 +290,34 @@ const dimensions = [
         />
         Slideshow
       </label>
+<input
+  placeholder="Initial Likes (optional)"
+  value={form.initialLikes}
+  onChange={(e) =>
+    setForm({
+      ...form,
+      initialLikes: e.target.value,
+    })
+  }
+  className="
+    border rounded-[50px]
+    font-black px-2 py-1 w-full
+  "
+/>
 
+<input
+  placeholder="Initial Comments (optional)"
+  value={form.initialComments}
+  onChange={(e) =>
+    setForm({
+      ...form,
+      initialComments: e.target.value,
+    })
+  }
+  className="
+    border rounded-[50px]
+    font-black px-2 py-1 w-full"
+  />
       <button onClick={handleSubmit} className="bg-black rounded-[50px] text-white px-4 mx-5 py-2">
         Submit
       </button>

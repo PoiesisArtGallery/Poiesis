@@ -56,25 +56,33 @@ export default function Navbar() {
 
   // 🛠️ JS Scroll Logic: Monitors scrolling for both Desktop and Mobile views
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY
+  const MOBILE_TRIGGER = 120
+  const DESKTOP_TRIGGER = 120
 
-      // Mobile sticky tracking
-      if (mobileNavRef.current) {
-        const mobileOffset = mobileNavRef.current.offsetTop || 120
-        setIsMobileSticky(scrollY >= mobileOffset)
-      }
+  const handleScroll = () => {
+    const scrollY = window.scrollY
 
-      // Desktop sticky tracking
-      if (desktopNavRef.current) {
-        const desktopOffset = desktopNavRef.current.offsetTop || 120
-        setIsDesktopSticky(scrollY >= desktopOffset)
-      }
+    // Mobile Sticky
+    if (scrollY > MOBILE_TRIGGER) {
+      setIsMobileSticky(true)
+    } else {
+      setIsMobileSticky(false)
     }
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    // Desktop Sticky
+    if (scrollY > DESKTOP_TRIGGER) {
+      setIsDesktopSticky(true)
+    } else {
+      setIsDesktopSticky(false)
+    }
+  }
+
+  window.addEventListener("scroll", handleScroll)
+
+  return () => {
+    window.removeEventListener("scroll", handleScroll)
+  }
+}, [])
 
   return (
     <div className="w-full bg-white flex flex-col">
@@ -177,15 +185,20 @@ export default function Navbar() {
       </div>
 
       {/* 🔥 DESKTOP NAV */}
-      {isDesktopSticky && <div className="hidden md:block h-[116px]"></div>}
+      <div className="hidden md:block h-[60px]"></div>
 
       <div 
         ref={desktopNavRef}
-        className={
-          isDesktopSticky 
-            ? "fixed top-0 left-0 w-full z-50 border-b bg-white shadow-sm hidden md:flex items-center justify-between px-6 py-3" 
-            : "hidden md:flex items-center justify-between px-6 py-1 border-b bg-white"
-        }
+       className={`
+  hidden md:flex items-center justify-between
+  px-6 py-1 border-b bg-white
+  transition-all duration-300
+  ${
+    isDesktopSticky
+      ? "fixed top-0 left-0 w-full z-50 shadow-md backdrop-blur-md"
+      : "relative"
+  }
+`}
       >
         {/* Logo */}
         <a href="/" className="flex items-center ">
@@ -222,7 +235,7 @@ export default function Navbar() {
         </div>
 
         {/* Icons */}
-        <div className="flex items-center justify-between px-6 py-2 flex-wrap gap-2 text-black">
+        <div className="flex items-center justify-between px-6 py-1 flex-wrap gap-2 text-black">
           <SearchBar />
           <LoginModal open={isLoginModalOpen} setOpen={setIsLoginModalOpen} />
 
@@ -236,7 +249,7 @@ export default function Navbar() {
               </div>
               {openMenu && (
                 <div className="absolute right-0 mx-8 mt-2 bg-white border shadow-md rounded-lg w-30 text-left z-50">
-                  <a href="/dashboard" className="block px-4 py-2 hover:bg-gray-100">
+                  <a href="/dashboard" className="block px-4 py-1 hover:bg-gray-100">
                     Dashboard
                   </a>
                 </div>
@@ -246,7 +259,7 @@ export default function Navbar() {
                   await supabase.auth.signOut()
                   window.location.reload()
                 }}
-                className="text-right mr-50 px-4 py-2 hover:bg-gray-100 mt-2 bg-white border shadow-md rounded-lg w-23"
+                className="text-right mr-50 px-4 py-1 hover:bg-gray-100 mt-2 bg-white border shadow-md rounded-lg w-23"
               >
                 Logout
               </button>

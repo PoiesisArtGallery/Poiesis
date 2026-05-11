@@ -8,12 +8,16 @@ import Image from "next/image"
 import Link from "next/link"
 import { getImageUrl } from "@/lib/getImage"
 import Footer from "@/components/Footer"
-import { Heart, MessageCircle, ShoppingCart, Info } from "lucide-react"
+import {  Menu, X, ShoppingCart, Info } from "lucide-react"
+import LikeButton from "@/components/LikeButton"
+import WishlistButton from "@/components/WishlistButton"
+import CommentSection from "@/components/CommentSection"
 import GalleryFilter from "@/components/GalleryFilter"
 import { useWishlistStore } from "@/store/wishlistStore"
 
 export default function GalleryPage() {
-
+const [showCategories, setShowCategories] =
+  useState(false)
   const addToCart = useCartStore((state) => state.addToCart)
 
   // ✅ FETCHED ARTWORKS
@@ -79,7 +83,23 @@ useEffect(() => {
     "Graphics / Printmaking"
 
   ]
+const scrollToCategory = (
+  category: string
+) => {
 
+  const section =
+    document.getElementById(category)
+
+  if (section) {
+
+    section.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    })
+  }
+
+  setShowCategories(false)
+}
   // ✅ SHUFFLE ARRAY
   const shuffleArray = (array: any[]) => {
 
@@ -165,7 +185,97 @@ useEffect(() => {
       <h1 className="font-art text-center text-[60px] underline font-bold">
         Gallery
       </h1>
+{/* FLOATING CATEGORY MENU */}
 
+<div
+  className="
+    fixed left-3 top-3/7
+    -translate-y-1/2
+    z-50
+  "
+>
+
+  {/* MENU BUTTON */}
+  <button
+    onClick={() =>
+      setShowCategories(!showCategories)
+    }
+    className="
+      bg-black/90
+      backdrop-blur-md
+      text-white
+      p-3
+      rounded-full
+      shadow-2xl
+      hover:scale-110
+      transition-all duration-300
+    "
+  >
+
+    {showCategories ? (
+      <X size={15} />
+    ) : (
+      <Menu size={15} />
+    )}
+
+  </button>
+
+  {/* CATEGORY PANEL */}
+  <div
+    className={`
+      overflow-hidden
+      transition-all duration-500
+      ${
+        showCategories
+          ? "max-h-[700px] opacity-100 mt-4"
+          : "max-h-0 opacity-0"
+      }
+    `}
+  >
+
+    <div
+      className="
+        bg-white/90
+        backdrop-blur-xl
+        shadow-2xl
+        rounded-3xl
+        p-4
+        flex flex-col
+        gap-2
+        min-w-[220px]
+        border
+      "
+    >
+
+      {categories.map((cat) => (
+
+        <button
+          key={cat}
+          onClick={() =>
+            scrollToCategory(cat)
+          }
+          className="
+            text-left
+            px-4 py-2
+            rounded-[15px]
+            hover:bg-black
+            hover:text-white
+            transition-all duration-300
+            font-medium
+          "
+        >
+
+          {cat}
+
+        </button>
+
+      ))}
+
+    </div>
+
+  </div>
+
+</div>
       <GalleryFilter categories={categories} />
 
       {categories.map((category) => {
@@ -191,11 +301,11 @@ useEffect(() => {
           <section
             id={category}
             key={category}
-            className="mb-20"
+            className="mb-10"
           >
 
             {/* HEADER */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
 
               <h2 className="text-4xl font-heading font-bold underline">
                 {category}
@@ -258,149 +368,7 @@ useEffect(() => {
 
 function ArtworkCard({ art, addToCart, isPurchasable }: any) {
 
-  const [likes, setLikes] = useState<number>(art.likes || 0)
-  const [comments, setComments] = useState<any[]>([])
-  const [baseComments] = useState<number>(art.commentsCount || 0)
-  const [newComment, setNewComment] = useState("")
-  const [showComments, setShowComments] = useState(false)
-  const [liked, setLiked] = useState(false)
-  const [commented, setCommented] = useState(false)
-  const [user, setUser] = useState<any>(null)
-  const [isWishlisted, setIsWishlisted] = useState(false)
-
-  useEffect(() => {
-
-    const likedKey = `liked-${art.id}`
-    const commentKey = `commented-${art.id}`
-
-    if (localStorage.getItem(likedKey)) setLiked(true)
-    if (localStorage.getItem(commentKey)) setCommented(true)
-
-    const fetchData = async () => {
-
-      const { data: userData } = await supabase.auth.getUser()
-
-      setUser(userData.user)
-
-      const { data: commentsData } = await supabase
-        .from("comments")
-        .select("*")
-        .eq("artwork_id", art.id)
-
-      setComments(commentsData || [])
-
-      if (userData.user) {
-
-        const { data: existing } = await supabase
-          .from("wishlist")
-          .select("*")
-          .eq("user_id", userData.user.id)
-          .eq("artwork_id", art.id)
-          .single()
-
-        if (existing) setIsWishlisted(true)
-      }
-    }
-
-    fetchData()
-
-  }, [art.id])
-
-  const handleWishlist = async () => {
-
-    if (!user) {
-
-      alert("Please login first")
-      return
-    }
-
-    if (isWishlisted) {
-
-      await supabase
-        .from("wishlist")
-        .delete()
-        .eq("user_id", user.id)
-        .eq("artwork_id", art.id)
-
-      setIsWishlisted(false)
-
-    } else {
-
-      await supabase
-        .from("wishlist")
-        .insert([{
-
-          user_id: user.id,
-          artwork_id: art.id,
-          title: art.title,
-          image: art.image,
-          price: art.price
-
-        }])
-
-      setIsWishlisted(true)
-    }
-  }
-
-  const handleLike = async () => {
-
-    const key = `liked-${art.id}`
-
-    if (liked) {
-
-      setLikes((prev) => prev - 1)
-
-      setLiked(false)
-
-      localStorage.removeItem(key)
-
-    } else {
-
-      setLikes((prev) => prev + 1)
-
-      setLiked(true)
-
-      localStorage.setItem(key, "true")
-
-      await supabase.from("likes").insert([
-        { artwork_id: art.id }
-      ])
-    }
-  }
-
-  const handleComment = async () => {
-
-    if (!newComment.trim() || commented) {
-
-      alert("You can comment only once")
-      return
-    }
-
-    const { data, error } = await supabase
-      .from("comments")
-      .insert([{
-        artwork_id: art.id,
-        name: "Anonymous",
-        comment: newComment
-      }])
-      .select()
-
-    if (error) {
-      console.error(error)
-      return
-    }
-
-    setComments((prev) => [...prev, ...(data || [])])
-
-    setNewComment("")
-
-    setCommented(true)
-
-    localStorage.setItem(
-      `commented-${art.id}`,
-      "true"
-    )
-  }
+  
 
   return (
 
@@ -433,10 +401,9 @@ function ArtworkCard({ art, addToCart, isPurchasable }: any) {
 
           <div className="flex justify-end font-bold text-[15px] border rounded-[20px] px-1 py-1 inline-block mx-8 mt-2 hover:bg-black hover:text-white transition">
 
-            <button onClick={handleWishlist}>
-              {isWishlisted ? "❤️" : "🤍"} Wishlist
-            </button>
-
+            <div className="flex justify-end mx-8 mt-2">
+  <WishlistButton art={art} />
+</div>
           </div>
 
         </div>
@@ -445,22 +412,13 @@ function ArtworkCard({ art, addToCart, isPurchasable }: any) {
 
       <div className="flex justify-between items-center mt-3">
 
-        <div className="flex items-center gap-4 text-sm">
+       <div className="flex items-center gap-4 text-sm">
 
-          <button onClick={handleLike}>
-            <Heart size={20} /> {likes}
-          </button>
+  <LikeButton artworkId={art.id} />
 
-          <button
-            onClick={() =>
-              setShowComments(!showComments)
-            }
-          >
-            <MessageCircle size={20} />{" "}
-            {baseComments + comments.length}
-          </button>
+  <CommentSection artworkId={art.id} />
 
-        </div>
+</div>
 
         {isPurchasable(art) ? (
 
@@ -494,45 +452,7 @@ function ArtworkCard({ art, addToCart, isPurchasable }: any) {
 
       </div>
 
-      {showComments && (
-
-        <div className="mt-3">
-
-          <div className="flex gap-2">
-
-            <input
-              value={newComment}
-              onChange={(e) =>
-                setNewComment(e.target.value)
-              }
-              placeholder="Write a comment..."
-              className="border p-1 text-sm flex-1"
-            />
-
-            <button
-              onClick={handleComment}
-              className="text-sm border px-2"
-            >
-              Post
-            </button>
-
-          </div>
-
-          <div className="mt-2 text-sm space-y-1">
-
-            {comments.map((c) => (
-
-              <p key={c.id}>
-                <strong>{c.name}:</strong> {c.comment}
-              </p>
-
-            ))}
-
-          </div>
-
-        </div>
-
-      )}
+     
 
     </div>
 
