@@ -97,19 +97,19 @@ useEffect(() => {
               Blogs
             </Link>
 
-            <Link href="/docs/Privacy_Policy" className="font-bold text-[20px] hover:text-blue-800 hover:underline">
+            <Link href="/docs/Privacy_Policy2" className="font-bold text-[20px] hover:text-blue-800 hover:underline">
               Privacy Policy
             </Link>
 
-            <Link href="/docs/Terms_and_Conditions" className="font-bold text-[20px] hover:text-blue-800 hover:underline">
+            <Link href="/docs/Terms_and_Conditions2" className="font-bold text-[20px] hover:text-blue-800 hover:underline">
               Terms & Conditions
             </Link>
 
- <Link href="/docs/Shipping_Policy" className="font-bold text-[20px] hover:text-blue-800 hover:underline ">
+ <Link href="/docs/Shipping_Policy2" className="font-bold text-[20px] hover:text-blue-800 hover:underline ">
               *Shipping Policy
             </Link>
 
-            <Link href="/docs/Refund_Policy" className="font-bold text-[20px] hover:text-blue-800 hover:underline">
+            <Link href="/docs/Refund_Policy2" className="font-bold text-[20px] hover:text-blue-800 hover:underline">
               **Refund & Cancellation Policy
             </Link>
 
