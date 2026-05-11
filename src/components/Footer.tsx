@@ -10,7 +10,8 @@ import {
   Twitter,
   Youtube,
   Mail,
-  Phone
+  Phone,
+  Linkedin
 } from "lucide-react"
 
 
@@ -73,7 +74,7 @@ useEffect(() => {
 
           <div className="flex gap-4">
 
-            {[Instagram, Facebook, Twitter, Youtube].map((Icon, i) => (
+            {[Instagram, Facebook, Twitter, Linkedin].map((Icon, i) => (
               <a
                 key={i}
                 className="p-2 border rounded-full hover:bg-black hover:text-white transition duration-300"

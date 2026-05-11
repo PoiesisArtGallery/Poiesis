@@ -62,7 +62,7 @@ export default function WishlistButton({
     <button
       onClick={handleWishlist}
       className={`
-      px-2 py-1 rounded-full border
+      px-1 py-1 rounded-full border
       transition-all duration-300
       ${
         wishlisted
