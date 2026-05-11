@@ -217,9 +217,9 @@ useEffect(() => {
     {/* 3 */}
     <div>
       <p className="text-2xl mb-3">🔁</p>
-      <p className="font-medium font-art">7 Days Return</p>
+      <p className="font-medium font-art">3 Days Return</p>
       <p className="text-sm text-gray-400 mt-1">
-        *Exchange available
+        **Exchange available
       </p>
     </div>
 

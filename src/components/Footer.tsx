@@ -105,13 +105,15 @@ useEffect(() => {
               Terms & Conditions
             </Link>
 
-            <Link href="/docs/Refund_Policy" className="font-bold text-[20px] hover:text-blue-800 hover:underline">
-              *Refund & Cancellation Policy
+ <Link href="/docs/Shipping_Policy" className="font-bold text-[20px] hover:text-blue-800 hover:underline ">
+              *Shipping Policy
             </Link>
 
-            <Link href="/docs/Shipping_Policy" className="font-bold text-[20px] hover:text-blue-800 hover:underline ">
-              Shipping Policy
+            <Link href="/docs/Refund_Policy" className="font-bold text-[20px] hover:text-blue-800 hover:underline">
+              **Refund & Cancellation Policy
             </Link>
+
+           
 {user?.email === "poiesis.art.gallery.pag@gmail.com" && (
   <Link href="/admin" className=" font-bold font-art text-xl text-pink-800 border rounded-[10px] px-2 py-1 hover:bg-yellow-400 hover:text-black hover:underline transition w-[35%]">
     Admin Panel
