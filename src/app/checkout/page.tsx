@@ -55,7 +55,7 @@ export default function CheckoutPage() {
         <input name="city" placeholder="City" required onChange={handleChange} className="w-full border rounded-[20px] p-2" />
         <input name="state" placeholder="State" required onChange={handleChange} className="w-full border rounded-[20px] p-2" />
         <input name="pincode" placeholder="Pincode" required onChange={handleChange} className="w-full border rounded-[20px] p-2" />
-        <input name="phone" placeholder="Phone" required onChange={handleChange} className="w-full border rounded-[20px] p-2" />
+        <input name="phone(10 digits without +91 or 0)" placeholder="Phone" required onChange={handleChange} className="w-full border rounded-[20px] p-2" />
         <input name="email" placeholder="Email" required onChange={handleChange} className="w-full border rounded-[20px]  p-2" />
 
         {/* 🚚 SHIPPING NOTE */}

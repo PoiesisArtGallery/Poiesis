@@ -2,12 +2,9 @@ import { NextResponse } from "next/server"
 import crypto from "crypto"
 import { supabase } from "@/lib/supabase"
 import { Resend } from "resend"
-import twilio from "twilio"   
+   
 const resend = new Resend(process.env.RESEND_API_KEY!)
-  const client = twilio(
-  process.env.TWILIO_ACCOUNT_SID!,
-  process.env.TWILIO_AUTH_TOKEN!
-)
+ 
 export async function POST(req: Request) {
 
   try {
@@ -89,7 +86,7 @@ export async function POST(req: Request) {
 
       await resend.emails.send({
 
-        from: "Poiesis Art Gallery <onboarding@resend.dev>",
+        from: "Poiesis Art Gallery <onboarding@poiesisartgallery.com>",
 
         to: orderData.email,
 
@@ -140,48 +137,16 @@ export async function POST(req: Request) {
 
       console.error("Customer email failed:", emailError)
     }
-     // ✅ CUSTOMER WHATSAPP
-try {
-
-  await client.messages.create({
-
-    from: process.env.TWILIO_WHATSAPP_NUMBER!,
-
-    to: `whatsapp:${orderData.phone}`,
-
-    body: `
-Payment Successful ✅
-
-POIESIS ART GALLERY
-
-Order ID:
-${razorpay_order_id}
-
-Amount:
-₹${orderData.total}
-
-Your order is being processed.
-
-Thank you for your purchase.
-    `
-  })
-
-} catch (whatsappError) {
-
-  console.error(
-    "Customer WhatsApp failed:",
-    whatsappError
-  )
-}
+     
 
     // ✅ ADMIN EMAIL ALERT
     try {
 
       await resend.emails.send({
 
-        from: "Poiesis Art Gallery <onboarding@resend.dev>",
+        from: "Poiesis Art Gallery <onboarding@poiesisartgallery.com>",
 
-        to: "manishbarnwal925@gmail.com",
+        to: "poiesis.art.gallery.pag@gmail.com",
 
         subject: "New Order Received 🎨",
 

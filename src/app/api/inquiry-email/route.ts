@@ -24,9 +24,9 @@ export async function POST(req: Request) {
     // ✅ ADMIN EMAIL
     await resend.emails.send({
 
-      from: "Poiesis Art Gallery <onboarding@resend.dev>",
+      from: "Poiesis Art Gallery <onboarding@poiesisartgallery.com>",
 
-      to: "manishbarnwal925@gmail.com",
+      to: "poiesis.art.gallery.pag@gmail.com",
 
       subject: artwork
         ? `New inquiry about artwork: ${artwork}`
@@ -78,7 +78,7 @@ export async function POST(req: Request) {
     // ✅ CUSTOMER CONFIRMATION EMAIL
     await resend.emails.send({
 
-      from: "Poiesis Art <onboarding@resend.dev>",
+      from: "Poiesis Art <onboarding@poiesisartgallery.com>",
 
       to: email,
 
