@@ -378,16 +378,34 @@ function ArtworkCard({ art, addToCart, isPurchasable }: any) {
 
         <div className="overflow-hidden rounded-xl shadow-xl">
 
-          <img
-            src={getImageUrl(art.image)}
-            className="h-[250px] w-full object-cover group-hover:scale-105 transition duration-800 mb-3"
-          />
+         <Link href={`/artwork/${art.id}`}>
 
-          <p className="font-art">{art.title}</p>
+  <img
+    src={getImageUrl(art.image)}
+    className="h-[250px] w-full object-cover group-hover:scale-105 transition duration-800 mb-3 cursor-pointer"
+  />
 
-          <p className="text-md font-bold text-blue-800">
-            {art.artist}
-          </p>
+</Link>
+          <Link href={`/artwork/${art.id}`}>
+
+  <p className="font-art hover:underline cursor-pointer">
+    {art.title}
+  </p>
+
+</Link>
+          <Link
+  href={`/artists/${encodeURIComponent(
+    art.artist
+  )}`}
+>
+
+  <p className="text-md font-bold text-blue-800 hover:underline cursor-pointer">
+
+    {art.artist}
+
+  </p>
+
+</Link>
 
           <Link href={`/artwork/${art.id}`}>
 

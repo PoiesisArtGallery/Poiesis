@@ -6,32 +6,32 @@ export default function AdminPage() {
 
   return (
 
-    <main className="px-10 py-16">
+    <main className="px-4 py-16">
 
-      <h1 className="text-3xl font-bold underline mb-10">Admin Panel</h1>
+      <h1 className="text-4xl font-bold font-heading underline mb-10">Admin Panel</h1>
 
-      <div className="flex gap-6">
+      <div className="grid grid-cols-3 md:grid-cols-6 gap-2 mb-10">
 
         <Link
           href="/admin/new-entry"
-          className="border rounded-[50] text-blue-900 font-bold px-6 py-3"
+          className="border rounded-[50] w-[120px] h-[70px] text-blue-900 font-bold px-6 py-3"
         >
           New Entry
         </Link>
 
         <Link
           href="/admin/modify"
-          className="border rounded-[50] text-blue-900 font-bold px-6 py-3"
+          className="border rounded-[50] w-[120px] h-[70px] text-blue-900 font-bold px-6 py-3"
         >
           Modify Entry
         </Link>
 <Link href="/admin/homepage"
-className="border rounded-[50] text-blue-900 font-bold px-6 py-3"
+className="border rounded-[50] w-[120px] h-[70px] text-blue-900 font-bold px-6 py-3"
         >
   Homepage Sections
 </Link>
 <Link href="/admin/modify-homepage"
-className="border rounded-[50] text-blue-900 font-bold px-6 py-3"
+className="border rounded-[50] w-[120px] h-[75px] text-blue-900 font-bold px-6 py-1"
         >
   Modify Homepage Sections
 </Link>

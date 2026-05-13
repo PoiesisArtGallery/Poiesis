@@ -7,20 +7,28 @@ import ArtistClient from "@/components/ArtistClient"
 
 export default function ArtistPage() {
 
-  const { name } = useParams()
+  const params = useParams()
+
+  const name = decodeURIComponent(
+    params.name as string
+  )
 
   const [artist, setArtist] = useState<any>(null)
+
   const [artworks, setArtworks] = useState<any[]>([])
 
   useEffect(() => {
 
     const fetchData = async () => {
 
-      // 🎯 FETCH ARTIST
-      const { data: artistData, error } = await supabase
+      // ✅ FETCH ARTIST BY NAME
+      const {
+        data: artistData,
+        error
+      } = await supabase
         .from("artists")
         .select("*")
-        .eq("slug", name)
+        .eq("name", name)
         .single()
 
       console.log("ARTIST:", artistData, error)
@@ -29,14 +37,13 @@ export default function ArtistPage() {
 
       setArtist(artistData)
 
-      // 🎯 FETCH ARTWORKS
+      // ✅ FETCH ARTWORKS
       const { data: artworksData } = await supabase
         .from("artworks")
         .select("*")
         .eq("artist", artistData.name)
 
       setArtworks(artworksData || [])
-
     }
 
     fetchData()
@@ -44,13 +51,24 @@ export default function ArtistPage() {
   }, [name])
 
   if (!artist) {
-    return <div>Artist not found</div>
+
+    return (
+
+      <div className="p-10 text-2xl font-bold">
+
+        Artist not found
+
+      </div>
+
+    )
   }
 
   return (
+
     <ArtistClient
       artist={artist}
       artworks={artworks}
     />
+
   )
 }

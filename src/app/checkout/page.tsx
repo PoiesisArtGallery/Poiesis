@@ -27,18 +27,75 @@ export default function CheckoutPage() {
   }
 
   const handleSubmit = (e: any) => {
-    e.preventDefault()
 
-    if (items.length === 0) {
-      alert("Cart is empty")
+  e.preventDefault()
+
+  if (items.length === 0) {
+
+    alert("Cart is empty")
+
+    return
+  }
+
+  // ✅ TRIM VALUES
+  const trimmedForm = {
+
+    name: form.name.trim(),
+    address: form.address.trim(),
+    city: form.city.trim(),
+    state: form.state.trim(),
+    pincode: form.pincode.trim(),
+    phone: form.phone.trim(),
+    email: form.email.trim()
+  }
+
+  // ✅ EMPTY CHECK
+  for (const key in trimmedForm) {
+
+    if (!trimmedForm[key as keyof typeof trimmedForm]) {
+
+      alert("Please fill all fields")
+
       return
     }
-
-    // Save to localStorage (temporary)
-    localStorage.setItem("shipping", JSON.stringify(form))
-
-    router.push("/checkout/summary")
   }
+
+  // ✅ PHONE VALIDATION
+  if (!/^[6-9]\d{9}$/.test(trimmedForm.phone)) {
+
+    alert("Enter valid 10-digit Indian mobile number")
+
+    return
+  }
+
+  // ✅ PINCODE VALIDATION
+  if (!/^\d{6}$/.test(trimmedForm.pincode)) {
+
+    alert("Enter valid 6-digit pincode")
+
+    return
+  }
+
+  // ✅ EMAIL VALIDATION
+  if (
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+      trimmedForm.email
+    )
+  ) {
+
+    alert("Enter valid email address")
+
+    return
+  }
+
+  // ✅ SAVE
+  localStorage.setItem(
+    "shipping",
+    JSON.stringify(trimmedForm)
+  )
+
+  router.push("/checkout/summary")
+}
 
   return (
 

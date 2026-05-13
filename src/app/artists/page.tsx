@@ -58,7 +58,11 @@ export default function ArtistsPage() {
 
               
 
-<Link href={`/artists/${artist.slug}`}>
+<Link
+  href={`/artists/${encodeURIComponent(
+    artist.name
+  )}`}
+>
   <p className="text-sm mb-2 text-center text-blue-800 font-bold border rounded-[30px] px-4 py-1 w-max mx-auto">
     Show More
   </p>

@@ -144,10 +144,13 @@ const slug = artwork.artist
 
 
 <Link
-  href={`/artists/${slug}`}
-  className="border rounded-[20px] text-blue-600 text-sm px-4 py-1 font-bold inline-block hover:bg-black hover:text-white transition"
+  href={`/artists/${encodeURIComponent(
+    artwork.artist
+  )}`}
 >
-  About the Artist
+  <p className="border rounded-[20px] text-blue-600 text-sm px-4 py-1 font-bold inline-block hover:bg-black hover:text-white transition">
+    About the Artist: {artwork.artist}
+  </p>
 </Link>
 
         </div>
