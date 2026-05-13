@@ -216,34 +216,64 @@ Thank you for your purchase.
       )
     }
 
-    // ✅ ADMIN WHATSAPP ALERT
+   // ✅ NTFY ORDER ALERT
 try {
 
-  await client.messages.create({
+  await fetch(
+    "https://ntfy.sh/poiesis-admin-alerts",
+    {
 
-    from: process.env.TWILIO_WHATSAPP_NUMBER!,
+      method: "POST",
 
-    to: process.env.ADMIN_WHATSAPP!,
+      headers: {
 
-    body: `
-🎨 New Order Received
+        Title: "New Order Received",
+
+        Priority: "urgent",
+
+        Tags: "shopping_cart,money"
+      },
+
+      body: `
+🎨 NEW ORDER RECEIVED
 
 Customer:
 ${orderData.customer_name}
 
-Amount:
-₹${orderData.total}
+Email:
+${orderData.email}
+
+Phone:
+${orderData.phone}
+
+Address:
+${orderData.address}
 
 Items:
-${orderData.items.map((i: any) => i.title).join(", ")}
-    `
-  })
+${orderData.items.map((i: any) =>
+  `${i.title} (${i.artist || "Unknown Artist"})`
+).join(", ")}
 
-} catch (adminWhatsappError) {
+Total:
+₹${orderData.total}
+
+Payment ID:
+${razorpay_payment_id}
+
+Order ID:
+${razorpay_order_id}
+
+Status:
+Paid
+      `
+    }
+  )
+
+} catch (ntfyError) {
 
   console.error(
-    "Admin WhatsApp failed:",
-    adminWhatsappError
+    "NTFY ORDER ALERT FAILED:",
+    ntfyError
   )
 }
     // ✅ SUCCESS RESPONSE

@@ -1,11 +1,8 @@
 import { Resend } from "resend"
 import { NextResponse } from "next/server"
-import twilio from "twilio"
+
 const resend = new Resend(process.env.RESEND_API_KEY!)
-const client = twilio(
-  process.env.TWILIO_ACCOUNT_SID!,
-  process.env.TWILIO_AUTH_TOKEN!
-)
+
 export async function POST(req: Request) {
 
   try {
@@ -122,17 +119,41 @@ export async function POST(req: Request) {
         </p>
       `
     })
-// ✅ ADMIN WHATSAPP ALERT
+// ✅ NTFY INQUIRY ALERT
 try {
-console.log("Sending WhatsApp...")
-  await client.messages.create({
 
-    from: process.env.TWILIO_WHATSAPP_NUMBER!,
+  await fetch(
+    "https://ntfy.sh/poiesis-admin-alerts",
+    {
 
-    to: process.env.ADMIN_WHATSAPP!,
+      method: "POST",
 
-    body: `
-🎨 New Inquiry Received
+      headers: {
+
+        Title: "New Inquiry Received",
+
+        Priority: "urgent",
+
+        Tags: "art,mailbox"
+      },
+
+      body: `
+🎨 NEW INQUIRY RECEIVED
+
+Customer:
+${name}
+
+Email:
+${email}
+
+Phone:
+${phone}
+
+Place:
+${place}
+
+Inquiry Type:
+${type}
 
 Artwork:
 ${artwork || "N/A"}
@@ -140,24 +161,20 @@ ${artwork || "N/A"}
 Artist:
 ${artist || "N/A"}
 
-Customer:
-${name}
+Message:
+${message}
+      `
+    }
+  )
 
-Phone:
-${phone}
-
-Type:
-${type}
-    `
-  })
-console.log("WhatsApp sent successfully")
-} catch (twilioError) {
+} catch (ntfyError) {
 
   console.error(
-    "Twilio inquiry alert failed:",
-    twilioError
+    "NTFY INQUIRY ALERT FAILED:",
+    ntfyError
   )
 }
+
     return NextResponse.json({
       success: true
     })
