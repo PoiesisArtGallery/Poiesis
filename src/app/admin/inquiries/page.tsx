@@ -13,6 +13,7 @@ export default function InquiryPage() {
       const { data } = await supabase
         .from("inquiries")
         .select("*")
+        .order("created_at", { ascending: false })
       setData(data || [])
     }
     fetch()
