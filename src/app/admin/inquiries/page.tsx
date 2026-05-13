@@ -23,7 +23,7 @@ export default function InquiryPage() {
 
     <main className="px-10 py-16">
 
-      <h1 className="text-2xl mb-6">Inquiries</h1>
+      <h1 className="text-4xl mb-6 underline font-heading font-bold">Inquiries</h1>
 
       {data.map((item) => (
 
@@ -32,7 +32,7 @@ export default function InquiryPage() {
           key={item.id}
           className="block"
         >
-          <div className="border p-4 mb-4 hover:bg-gray-100 cursor-pointer">
+          <div className="w-[350px] border rounded-[15px] p-4 mb-4 hover:bg-gray-100 cursor-pointer">
 
             <p><strong>{item.name}</strong></p>
             <p>{item.email}</p>

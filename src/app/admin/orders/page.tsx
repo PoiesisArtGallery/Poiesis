@@ -51,7 +51,7 @@ export default function OrdersPage() {
 
         <div>
 
-          <h1 className="text-4xl font-black text-gray-900">
+          <h1 className="text-4xl font-black text-gray-900 underline font-heading">
             Orders Dashboard
           </h1>
 
@@ -64,12 +64,12 @@ export default function OrdersPage() {
       </div>
 
       {/* STATS */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-10">
+      <div className="grid grid-cols-3 gap-2 mb-10">
 
         {/* TOTAL */}
-        <div className="bg-black text-white rounded-2xl p-6 shadow-lg">
+        <div className="bg-black text-white w-[120px] h-[125px] rounded-2xl p-6 shadow-lg">
 
-          <p className="text-sm uppercase tracking-widest opacity-70">
+          <p className="text-sm uppercase font-bold tracking-widest opacity-70">
             Total Orders
           </p>
 
@@ -80,9 +80,9 @@ export default function OrdersPage() {
         </div>
 
         {/* PROCESSING */}
-        <div className="bg-yellow-400 rounded-2xl p-6 shadow-lg">
+        <div className="bg-yellow-400 w-[120px] h-[125px] rounded-2xl p-6 shadow-lg">
 
-          <p className="text-sm uppercase tracking-widest text-black/70">
+          <p className="text-sm uppercase font-bold text-black/70">
             Processing
           </p>
 
@@ -93,9 +93,9 @@ export default function OrdersPage() {
         </div>
 
         {/* DELIVERED */}
-        <div className="bg-green-600 text-white rounded-2xl p-6 shadow-lg">
+        <div className="bg-green-600 text-white w-[120px] h-[125px] rounded-2xl p-6 shadow-lg">
 
-          <p className="text-sm uppercase tracking-widest opacity-80">
+          <p className="text-sm uppercase font-bold tracking-widest opacity-80">
             Delivered
           </p>
 
