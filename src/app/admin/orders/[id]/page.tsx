@@ -95,7 +95,7 @@ export default function OrderDetail() {
 
   {/* ✅ ORDER CONFIRMATION */}
   <a
-    href={`https://wa.me/${order.phone?.replace(/\D/g, "")}?text=${encodeURIComponent(
+    href={`https://wa.me/91${order.phone?.replace(/\D/g, "")}?text=${encodeURIComponent(
 `Hello ${order.customer_name},
 
 Thank you for your purchase from POIESIS ART GALLERY 🎨
@@ -121,7 +121,7 @@ Thank you for supporting original art.
 
   {/* ✅ TRACKING UPDATE */}
   <a
-    href={`https://wa.me/${order.phone?.replace(/\D/g, "")}?text=${encodeURIComponent(
+    href={`https://wa.me/91${order.phone?.replace(/\D/g, "")}?text=${encodeURIComponent(
 `Hello ${order.customer_name},
 
 Your artwork from POIESIS ART GALLERY 🎨 has been shipped.
@@ -143,7 +143,7 @@ Thank you for your purchase.
 
   {/* ✅ SHIPPED MESSAGE */}
   <a
-    href={`https://wa.me/${order.phone?.replace(/\D/g, "")}?text=${encodeURIComponent(
+    href={`https://wa.me/91${order.phone?.replace(/\D/g, "")}?text=${encodeURIComponent(
 `Hello ${order.customer_name},
 
 Good news 🎉
@@ -167,7 +167,7 @@ Thank you for supporting original art.
 
   {/* ✅ DELIVERED MESSAGE */}
   <a
-    href={`https://wa.me/${order.phone?.replace(/\D/g, "")}?text=${encodeURIComponent(
+    href={`https://wa.me/91${order.phone?.replace(/\D/g, "")}?text=${encodeURIComponent(
 `Hello ${order.customer_name},
 
 Your artwork from POIESIS ART GALLERY 🎨 has been delivered successfully.
